@@ -17,7 +17,7 @@ object DateUtil  {
             return try {
                 val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss +0000",
                         Locale.getDefault())
-                inputFormat.parse(timestamp).time
+                inputFormat.parse(timestamp)?.time ?: 0
             } catch (e: ParseException) {
                 return 0
             }

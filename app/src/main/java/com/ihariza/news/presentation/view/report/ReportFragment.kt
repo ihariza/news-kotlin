@@ -44,12 +44,6 @@ class ReportFragment : BaseFragment() {
         viewModel.showReport(args.reportId)
     }
 
-    override fun onDestroyView() {
-        binding.webView.webViewClient = null
-        binding.webView.webChromeClient = null
-        super.onDestroyView()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_report, menu)
@@ -104,7 +98,7 @@ class ReportFragment : BaseFragment() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?)
                     : Boolean {
                 //To open hyperlink in existing WebView
-                view?.loadUrl(request?.url?.toString())
+                view?.loadUrl(request?.url.toString())
                 return false
             }
 
@@ -125,7 +119,7 @@ class ReportFragment : BaseFragment() {
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.settings.domStorageEnabled = true
         binding.webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-        binding.webView.loadUrl(url)
+        url?.let { binding.webView.loadUrl(it) }
     }
 
     private fun showShareReport(report: Report) {

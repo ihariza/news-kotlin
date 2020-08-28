@@ -102,14 +102,13 @@ buildscript {
   dependencies {
     classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0"
     classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0"
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0"
     classpath "org.jacoco:org.jacoco.core:0.8.5"
   }
 }
 
 dependencies {
 
-  implementation AndroidXdependencies.kotlin
+  implementation AndroidXdependencies.kotlin_stdlib
   implementation AndroidXdependencies.kotlin_core
   implementation AndroidXdependencies.lifecycle_vm
   implementation AndroidXdependencies.lifecycle_ext

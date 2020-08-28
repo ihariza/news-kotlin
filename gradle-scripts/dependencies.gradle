@@ -57,7 +57,7 @@ ext {
 
     // Dependency
     AndroidXdependencies = [
-            kotlin            : buildDependency('org.jetbrains.kotlin', 'kotlin-stdlib', kotlinVersion),
+            kotlin_stdlib     : buildDependency('org.jetbrains.kotlin', 'kotlin-stdlib', kotlinVersion),
             kotlin_core       : buildDependency('androidx.core', 'core-ktx', kotlinCoreVersion),
             lifecycle_vm      : buildDependency('androidx.lifecycle', 'lifecycle-viewmodel-ktx', kotlinLifecycleVersion),
             lifecycle_ext     : buildDependency('androidx.lifecycle', 'lifecycle-extensions', kotlinLifecycleVersion),
