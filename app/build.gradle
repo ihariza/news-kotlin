@@ -1,0 +1,179 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+apply from: '../gradle-scripts/config.gradle'
+apply from: '../gradle-scripts/dependencies.gradle'
+apply from: '../gradle-scripts/sonar.gradle'
+apply from: '../gradle-scripts/jacoco.gradle'
+
+android {
+  compileSdkVersion Android.compileSdkVersion
+
+  defaultConfig {
+    applicationId Android.applicationId
+    minSdkVersion Android.minSdkVersion
+    targetSdkVersion Android.targetSdkVersion
+    versionCode Android.versionCode
+    versionName Android.versionName
+
+    vectorDrawables.useSupportLibrary = true
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    buildConfigField 'String', 'NEWS_API', findProperty("NEWS_API_KEY") ?: ""
+    buildConfigField 'String', 'SPKI', findProperty("SPKI") ?: ""
+  }
+
+  signingConfigs {
+    config {
+      def keystorePropertiesFile = rootProject.file("keystore/release-keystore.properties")
+      def keystoreProperties = new Properties()
+      keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+      keyAlias keystoreProperties['keyAlias']
+      keyPassword keystoreProperties['keyPassword']
+      storeFile file(keystoreProperties['storeFile'])
+      storePassword keystoreProperties['storePassword']
+    }
+  }
+
+  buildTypes {
+    debug {
+      applicationIdSuffix '.debug'
+      versionNameSuffix '-DEBUG'
+      testCoverageEnabled true
+    }
+    release {
+      minifyEnabled true
+      shrinkResources true
+      signingConfig signingConfigs.config
+      proguardFiles getDefaultProguardFile(
+              'proguard-android-optimize.txt'),
+              'proguard-rules.pro'
+    }
+  }
+
+  buildFeatures {
+    viewBinding true
+  }
+
+  packagingOptions {
+    exclude 'META-INF/services/javax.annotation.processing.Processor'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/LICENSE.txt'
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8
+  }
+
+  testOptions {
+    unitTests.includeAndroidResources = true
+  }
+
+  flavorDimensions("flavorDimen")
+  productFlavors {
+    create("dev") {
+      applicationIdSuffix = ".dev"
+      buildConfigField("String", "BASE_URL", '"https://api.currentsapi.services/v1/"')
+    }
+    create("pre") {
+      applicationIdSuffix = ".pre"
+      buildConfigField("String", "BASE_URL", '"https://api.currentsapi.services/v1/"')
+    }
+    create("pro") {
+      buildConfigField("String", "BASE_URL", '"https://api.currentsapi.services/v1/"')
+    }
+  }
+}
+
+buildscript {
+  repositories {
+    jcenter()
+    google()
+  }
+  dependencies {
+    classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0"
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0"
+    classpath "org.jacoco:org.jacoco.core:0.8.5"
+  }
+}
+
+dependencies {
+
+  implementation AndroidXdependencies.kotlin
+  implementation AndroidXdependencies.kotlin_core
+  implementation AndroidXdependencies.lifecycle_vm
+  implementation AndroidXdependencies.lifecycle_ext
+  implementation AndroidXdependencies.fragment_ext
+  implementation AndroidXdependencies.appCompat
+  implementation AndroidXdependencies.material
+  implementation AndroidXdependencies.annotation
+  implementation AndroidXdependencies.constraintlayout
+  implementation AndroidXdependencies.nav_fragment
+  implementation AndroidXdependencies.nav_ui
+
+  implementation KoinDependencies.viewmodel
+
+  implementation RetrofitDependencies.retrofit
+  implementation RetrofitDependencies.converterGson
+  implementation RetrofitDependencies.adapterRxjava2
+
+  implementation OkhttpDependencies.okhttp
+  implementation OkhttpDependencies.loggingInterceptor
+
+  implementation RoomDependencies.runtime
+  kapt RoomDependencies.compiler
+  implementation RoomDependencies.extensions
+
+  implementation Gson
+
+  implementation GlideDependencies.core
+  kapt GlideDependencies.compiler
+  implementation GlideDependencies.recyclerIntegration
+
+  implementation Timber
+
+  implementation StethoDependencies.core
+  implementation StethoDependencies.okhttp
+
+  implementation TestingDependencies.espresso_idling
+
+  testImplementation TestingDependencies.junit
+  testImplementation TestingDependencies.mockk
+  testImplementation TestingDependencies.hamcrest
+  testImplementation TestingDependencies.arch_core
+  testImplementation TestingDependencies.coroutine_test
+
+  androidTestImplementation TestingDependencies.junit
+  androidTestImplementation TestingDependencies.ext
+  androidTestImplementation TestingDependencies.core
+  androidTestImplementation TestingDependencies.rules
+  androidTestImplementation TestingDependencies.espresso_core
+  androidTestImplementation TestingDependencies.espresso_contrib
+
+  debugImplementation TestingDependencies.fragment
+  debugImplementation TestingDependencies.core
+}
+
+subprojects {
+  apply plugin: "org.sonarqube"
+  sonarqube {
+    properties {
+      property "sonar.coverage.jacoco.xmlReportPaths",
+              "${project.buildDir}/reports/jacoco/testDevDebugUnitTestCoverage/*.xml"
+    }
+  }
+}
+
+// Run sonarqube
+//gradle clean connectedDevDebugAndroidTest testDevDebugUnitTest
+//gradle sonarqube -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/testDevDebugUnitTestCoverage/testDevDebugUnitTestCoverage.xml

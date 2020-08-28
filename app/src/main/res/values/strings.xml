@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">News</string>
+
+  <string name="action_share">Compartir</string>
+  <string name="action_open">Abrir en navegador</string>
+
+</resources>

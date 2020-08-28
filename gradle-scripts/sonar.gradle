@@ -1,0 +1,45 @@
+apply plugin: "org.sonarqube"
+
+sonarqube {
+  properties {
+    property "sonar.projectName", "News"
+    property "sonar.projectKey", "${android.defaultConfig.applicationId}"
+    property "sonar.projectVersion", "${android.defaultConfig.versionCode}"
+    property "sonar.sourceEncoding", "UTF-8"
+    property "sonar.java.coveragePlugin", "jacoco"
+    property "sonar.sources", "src/main/java"
+    property "sonar.exclusions", "**/*Generated.java"
+    // taken from `jacoco.gradle`
+    property "sonar.coverage.exclusions",
+                    "**/test/**," +
+                    "**/androidTest/**," +
+                    "**/R.class," +
+                    "**/BuildConfig.*," +
+                    "**/Manifest*.*," +
+                    "**/*Test*.*," +
+                    "**/databinding/*," +
+                    "**/generated/callback/*," +
+                    "**/*Dto*.*,**/android/databinding/*," +
+                    "**/androidx/databinding/*," +
+                    "**/di/module/*," +
+                    "**/*Mapper*.*," +
+                    "**/*Constant*.*," +
+                    "**/BuildConfig.*," +
+                    "**/*Component*.*," +
+                    "**/*BR*.*," +
+                    "**/*Dto*.*," +
+                    "**/*Database.*," +
+                    "**/Manifest*.*," +
+                    "**/*Companion*.*," +
+                    "**/*Module.*," +
+                    "**/*Dagger*.*," +
+                    "**/*MembersInjector*.*," +
+                    "**/*Extensions*.*," +
+                    "**/InputMethodManagerLeaks.*," +
+                    "**/*_Factory*.*," +
+                    "**/*_Provide*Factory*.*,"
+  }
+}
+
+// task named `testDevDebugUnitTestCoverage` is created inside `jacoco.gradle`
+tasks.sonarqube.dependsOn ":app:testDevDebugUnitTestCoverage"
