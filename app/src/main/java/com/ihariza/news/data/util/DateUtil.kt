@@ -32,13 +32,9 @@ object DateUtil  {
      * @return date in RFC 3339 format
      */
     fun getRFC3339Time(daysBeforeNow: Int): String? {
-        return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss +0000",
-                    Locale.getDefault())
-            val daysBeforeNowMillis = 1000 * 60 * 60 * 24 * daysBeforeNow
-            inputFormat.format(System.currentTimeMillis() - daysBeforeNowMillis)
-        } catch (e: ParseException) {
-            return null
-        }
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss +0000",
+                Locale.getDefault())
+        val daysBeforeNowMillis = 1000 * 60 * 60 * 24 * daysBeforeNow
+        return inputFormat.format(System.currentTimeMillis() - daysBeforeNowMillis)
     }
 }

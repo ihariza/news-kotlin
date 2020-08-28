@@ -36,5 +36,4 @@ class DateUtilTest {
 
         assert(result == currentDate)
     }
-
 }

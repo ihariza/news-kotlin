@@ -38,6 +38,9 @@ class NewsViewModelTest {
     @SpyK
     val refreshEventObserver: Observer<Event<Boolean>> = spyk(Observer {  })
 
+    @SpyK
+    val openReportEventObserver: Observer<Event<String>> = spyk(Observer {  })
+
     private lateinit var newsViewModel: NewsViewModel
 
     @Before
@@ -47,6 +50,7 @@ class NewsViewModelTest {
         newsViewModel.errorEvent.observeForever(errorEventObserver)
         newsViewModel.loadingEvent.observeForever(loadingEventObserver)
         newsViewModel.refreshingEvent.observeForever(refreshEventObserver)
+        newsViewModel.openReportEvent.observeForever(openReportEventObserver)
     }
 
     @Test
@@ -80,7 +84,7 @@ class NewsViewModelTest {
         val refreshSlot = slot<Event<Boolean>>()
         val errorSlot = slot<Event<String>>()
 
-        coVerifyOrder {
+        coVerifySequence {
             loadingEventObserver.onChanged(capture(loadingSlot))
             getNewsUseCase.getNews(any())
             refreshEventObserver.onChanged(capture(refreshSlot))
@@ -97,18 +101,15 @@ class NewsViewModelTest {
 
         newsViewModel.refreshNews()
 
-        val loadingSlot = slot<Event<Boolean>>()
-        val refreshSlot = slot<Event<Boolean>>()
-
-        coVerifySequence {
-            getNewsUseCase.getNews(any())
-            refreshEventObserver.onChanged(capture(refreshSlot))
-            loadingEventObserver.onChanged(capture(loadingSlot))
-        }
+        coVerify { getNewsUseCase.getNews(any()) }
     }
 
     @Test
     fun `open report should show report detail`()  {
+        newsViewModel.openReport(FakeNewsTest.REPORT_ID)
 
+        val openReportSlot = slot<Event<String>>()
+
+        verify { openReportEventObserver.onChanged(capture(openReportSlot)) }
     }
 }
