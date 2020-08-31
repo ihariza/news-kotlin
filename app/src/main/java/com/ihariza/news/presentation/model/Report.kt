@@ -1,7 +1,7 @@
 package com.ihariza.news.presentation.model
 
-import android.text.format.DateUtils
 import com.ihariza.news.domain.model.ReportBo
+import com.ihariza.news.presentation.view.util.DateUtils
 
 data class Report(
     val id: String,
@@ -20,5 +20,5 @@ fun ReportBo.toVm(): Report = Report(
         url,
         author,
         image,
-        DateUtils.getRelativeTimeSpanString(published).toString()
+        DateUtils.getRelativeTimeSpanString(published)
 )

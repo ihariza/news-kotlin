@@ -6,6 +6,7 @@ import com.ihariza.news.data.api.dto.ReportDto
 import com.ihariza.news.data.api.dto.toEntity
 import com.ihariza.news.data.entity.toBo
 import com.ihariza.news.domain.model.ReportBo
+import com.ihariza.news.presentation.model.Report
 
 object FakeNewsTest {
 
@@ -70,5 +71,18 @@ object FakeNewsTest {
     fun getReportBo() = getReportDto().toEntity().toBo()
 
     fun getNewsBo(): List<ReportBo> = getNewsDto().toEntity().toBo()
+
+    fun getReportVm(): Report {
+        val reportDto = getReportDto()
+        return Report(
+                reportDto.id,
+                reportDto.title,
+                reportDto.description,
+                reportDto.url,
+                reportDto.author,
+                reportDto.image,
+                "5 hour ago"
+        )
+    }
 
 }

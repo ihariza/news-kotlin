@@ -2,6 +2,7 @@ package com.ihariza.news.presentation.view.news
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.ihariza.news.domain.usecase.GetNewsUseCase
 import com.ihariza.news.presentation.event.Event
 import com.ihariza.news.presentation.model.Report
@@ -43,7 +44,7 @@ class NewsViewModel(private val getNewsUseCase: GetNewsUseCase) : BaseViewModel(
     }
 
     private fun getNews(pageNumber: Int) {
-        launch {
+        viewModelScope.launch {
             try {
                 _news.value = withContext(Dispatchers.IO) {
                     getNewsUseCase.getNews(pageNumber).map { it.toVm() }

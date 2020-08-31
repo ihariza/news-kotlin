@@ -30,16 +30,10 @@ class NewsViewModelTest {
     lateinit var getNewsUseCase: GetNewsUseCase
 
     @SpyK
-    val errorEventObserver: Observer<Event<String>> = spyk(Observer {  })
-
-    @SpyK
     val loadingEventObserver: Observer<Event<Boolean>> = spyk(Observer {  })
 
     @SpyK
     val refreshEventObserver: Observer<Event<Boolean>> = spyk(Observer {  })
-
-    @SpyK
-    val openReportEventObserver: Observer<Event<String>> = spyk(Observer {  })
 
     private lateinit var newsViewModel: NewsViewModel
 
@@ -47,14 +41,12 @@ class NewsViewModelTest {
     fun setup() {
         MockKAnnotations.init(this)
         newsViewModel = NewsViewModel(getNewsUseCase)
-        newsViewModel.errorEvent.observeForever(errorEventObserver)
         newsViewModel.loadingEvent.observeForever(loadingEventObserver)
         newsViewModel.refreshingEvent.observeForever(refreshEventObserver)
-        newsViewModel.openReportEvent.observeForever(openReportEventObserver)
     }
 
     @Test
-    fun `given page number should show a list of report`() = runBlocking {
+    fun `given page number should show a list of report`() = testCoroutineRule.runBlockingTest {
         coEvery {
             getNewsUseCase.getNews(any())
         } returns FakeNewsTest.getNewsBo()
@@ -73,7 +65,10 @@ class NewsViewModelTest {
     }
 
     @Test
-    fun `given an error should show show message error`() = runBlocking {
+    fun `given an error should show show message error`() = testCoroutineRule.runBlockingTest {
+        val errorEventObserver: Observer<Event<String>> = spyk(Observer {  })
+        newsViewModel.errorEvent.observeForever(errorEventObserver)
+
         coEvery {
             getNewsUseCase.getNews(any())
         } throws UnknownHostException()
@@ -94,7 +89,7 @@ class NewsViewModelTest {
     }
 
     @Test
-    fun `refresh news should clean and show list of report`() = runBlocking {
+    fun `refresh news should clean and show list of report`() = testCoroutineRule.runBlockingTest {
         coEvery {
             getNewsUseCase.getNews(any())
         } returns FakeNewsTest.getNewsBo()
@@ -106,6 +101,9 @@ class NewsViewModelTest {
 
     @Test
     fun `open report should show report detail`()  {
+        val openReportEventObserver: Observer<Event<String>> = spyk(Observer {  })
+        newsViewModel.openReportEvent.observeForever(openReportEventObserver)
+
         newsViewModel.openReport(FakeNewsTest.REPORT_ID)
 
         val openReportSlot = slot<Event<String>>()

@@ -2,6 +2,7 @@ package com.ihariza.news.presentation.view.report
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.ihariza.news.domain.usecase.GetReportUseCase
 import com.ihariza.news.presentation.event.Event
 import com.ihariza.news.presentation.model.Report
@@ -14,7 +15,7 @@ import java.lang.Exception
 
 class ReportViewModel(private val getReportUseCase: GetReportUseCase) : BaseViewModel() {
 
-    private val _report= MutableLiveData<Report?>()
+    private val _report = MutableLiveData<Report?>()
     val report: LiveData<Report?> get() = _report
 
     private val _shareReportEvent = MutableLiveData<Event<Report>>()
@@ -24,7 +25,7 @@ class ReportViewModel(private val getReportUseCase: GetReportUseCase) : BaseView
     val openWebReportEvent: LiveData<Event<String>> get() = _openWebReportEvent
 
     fun showReport(reportId: String) {
-        launch {
+        viewModelScope.launch {
             try {
                 _report.value = withContext(Dispatchers.IO) {
                     getReportUseCase.getReport(reportId)?.toVm()
@@ -36,10 +37,10 @@ class ReportViewModel(private val getReportUseCase: GetReportUseCase) : BaseView
     }
 
     fun shareReport() {
-        report.value?.let {  _shareReportEvent.value = Event(it) }
+        _report.value?.let {  _shareReportEvent.value = Event(it) }
     }
 
     fun openWebReport() {
-        report.value?.url?.let {  _openWebReportEvent.value = Event(it) }
+        _report.value?.url?.let { _openWebReportEvent.value = Event(it) }
     }
 }
