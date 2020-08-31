@@ -26,7 +26,7 @@ class NewsFragment : BaseFragment() {
     private val glideRequestManager: RequestManager by inject()
 
     private val adapter: NewsAdapter by lazy {
-        NewsAdapter(glideRequestManager) { viewModel.openReport(it) }
+        NewsAdapter(glideRequestManager, reportListener = { viewModel.openReport(it) })
     }
 
     private lateinit var binding: FragmentNewsBinding
