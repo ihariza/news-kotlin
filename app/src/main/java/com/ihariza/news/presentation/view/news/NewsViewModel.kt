@@ -9,11 +9,13 @@ import com.ihariza.news.presentation.model.Report
 import com.ihariza.news.presentation.model.toVm
 import com.ihariza.news.presentation.view.base.BaseViewModel
 import com.ihariza.news.presentation.view.util.Constants
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class NewsViewModel(private val getNewsUseCase: GetNewsUseCase) : BaseViewModel() {
+class NewsViewModel(
+        private val ioDispatcher: CoroutineDispatcher,
+        private val getNewsUseCase: GetNewsUseCase) : BaseViewModel() {
 
     private val _news = MutableLiveData<List<Report>>()
     val news: LiveData<List<Report>> get() = _news
@@ -46,7 +48,7 @@ class NewsViewModel(private val getNewsUseCase: GetNewsUseCase) : BaseViewModel(
     private fun getNews(pageNumber: Int) {
         viewModelScope.launch {
             try {
-                _news.value = withContext(Dispatchers.IO) {
+                _news.value = withContext(ioDispatcher) {
                     getNewsUseCase.getNews(pageNumber).map { it.toVm() }
                 }
                 hideLoading()

@@ -40,7 +40,7 @@ class NewsViewModelTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        newsViewModel = NewsViewModel(getNewsUseCase)
+        newsViewModel = NewsViewModel(testCoroutineRule.testCoroutineDispatcher, getNewsUseCase)
         newsViewModel.loadingEvent.observeForever(loadingEventObserver)
         newsViewModel.refreshingEvent.observeForever(refreshEventObserver)
     }

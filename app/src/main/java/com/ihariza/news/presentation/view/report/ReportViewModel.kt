@@ -8,12 +8,13 @@ import com.ihariza.news.presentation.event.Event
 import com.ihariza.news.presentation.model.Report
 import com.ihariza.news.presentation.model.toVm
 import com.ihariza.news.presentation.view.base.BaseViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 
-class ReportViewModel(private val getReportUseCase: GetReportUseCase) : BaseViewModel() {
+class ReportViewModel(
+        private val ioDispatcher: CoroutineDispatcher,
+        private val getReportUseCase: GetReportUseCase) : BaseViewModel() {
 
     private val _report = MutableLiveData<Report?>()
     val report: LiveData<Report?> get() = _report
@@ -27,7 +28,7 @@ class ReportViewModel(private val getReportUseCase: GetReportUseCase) : BaseView
     fun showReport(reportId: String) {
         viewModelScope.launch {
             try {
-                _report.value = withContext(Dispatchers.IO) {
+                _report.value = withContext(ioDispatcher) {
                     getReportUseCase.getReport(reportId)?.toVm()
                 }
             } catch (e: Exception) {

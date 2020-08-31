@@ -48,7 +48,7 @@ class ReportViewModelTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        reportViewModel = ReportViewModel(getReportUseCase)
+        reportViewModel = ReportViewModel(testCoroutineRule.testCoroutineDispatcher, getReportUseCase)
         reportViewModel.shareReportEvent.observeForever(shareReportEventObserver)
         reportViewModel.openWebReportEvent.observeForever(openWebReportObserver)
     }
