@@ -28,6 +28,7 @@ sonarqube {
                     "**/*Component*.*," +
                     "**/*BR*.*," +
                     "**/*Dto*.*," +
+                    "**/*Bo*.*," +
                     "**/*Database.*," +
                     "**/Manifest*.*," +
                     "**/*Companion*.*," +

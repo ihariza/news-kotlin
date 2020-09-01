@@ -13,7 +13,7 @@ interface ReportDao {
     suspend fun findBy(id: String?): ReportEntity?
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(report: ReportEntity?)
+    suspend fun insert(report: ReportEntity)
 
     @Query("DELETE FROM report")
     suspend fun deleteAll()

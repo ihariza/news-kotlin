@@ -4,7 +4,7 @@ import com.ihariza.news.BuildConfig
 import com.ihariza.news.data.api.NewsApi
 import com.ihariza.news.data.api.dto.toEntity
 import com.ihariza.news.data.entity.ReportEntity
-import com.ihariza.news.data.util.DateUtil
+import com.ihariza.news.data.util.DateUtils
 
 class RemoteNewsRepositoryImp (private val newsApi: NewsApi) : RemoteNewsRepository {
 
@@ -13,7 +13,7 @@ class RemoteNewsRepositoryImp (private val newsApi: NewsApi) : RemoteNewsReposit
                     BuildConfig.NEWS_API,
                     "es",
                     "es",
-                    DateUtil.getRFC3339Time(1),
+                    DateUtils.getRFC3339Time(1),
                     pageNumber)
                     .news.toEntity()
 }

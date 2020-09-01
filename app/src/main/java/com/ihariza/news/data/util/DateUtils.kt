@@ -4,7 +4,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-object DateUtil  {
+object DateUtils  {
 
     /**
      * Transform timestamp into long time

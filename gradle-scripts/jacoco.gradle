@@ -50,6 +50,7 @@ project.afterEvaluate {
               '**/*Component*.*',
               '**/*BR*.*',
               '**/*Dto*.*',
+              '**/*Bo*.*',
               '**/*Database*.*',
               '**/Manifest*.*',
               '**/*$Lambda$*.*',

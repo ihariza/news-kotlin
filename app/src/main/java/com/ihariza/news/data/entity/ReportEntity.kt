@@ -3,7 +3,6 @@ package com.ihariza.news.data.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ihariza.news.domain.model.ReportBo
-import com.ihariza.news.data.util.DateUtil
 
 @Entity(tableName = "report")
 data class ReportEntity(

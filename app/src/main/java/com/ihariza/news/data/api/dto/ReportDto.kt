@@ -1,7 +1,7 @@
 package com.ihariza.news.data.api.dto
 
 import com.ihariza.news.data.entity.ReportEntity
-import com.ihariza.news.data.util.DateUtil
+import com.ihariza.news.data.util.DateUtils
 
 data class ReportDto(
     val id: String,
@@ -22,7 +22,7 @@ fun ReportDto.toEntity(): ReportEntity = ReportEntity(
         url,
         author,
         image,
-        DateUtil.getLongTime(published),
+        DateUtils.getLongTime(published),
         0
 )
 

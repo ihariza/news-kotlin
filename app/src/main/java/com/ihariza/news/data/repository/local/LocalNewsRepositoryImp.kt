@@ -6,19 +6,13 @@ import com.ihariza.news.data.entity.ReportEntity
 
 class LocalNewsRepositoryImp constructor(private val reportDao: ReportDao) : LocalNewsRepository {
 
-    override suspend fun getNews(pageNumber: Int): List<ReportEntity>? {
-        return reportDao.getAll(pageNumber)
-    }
+    override suspend fun getNews(pageNumber: Int): List<ReportEntity>?
+        = reportDao.getAll(pageNumber)
 
-    override suspend fun getReport(id: String?): ReportEntity? {
-        return reportDao.findBy(id)
-    }
+    override suspend fun getReport(id: String?): ReportEntity? = reportDao.findBy(id)
 
-    override suspend fun save(report: ReportEntity?) {
-        return reportDao.insert(report)
-    }
+    override suspend fun save(report: ReportEntity) =reportDao.insert(report)
 
-    override suspend fun removeAll() {
-        return reportDao.deleteAll()
-    }
+    override suspend fun removeAll() = reportDao.deleteAll()
+
 }

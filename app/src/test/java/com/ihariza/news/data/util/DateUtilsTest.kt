@@ -4,25 +4,25 @@ import org.junit.Test
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DateUtilTest {
+class DateUtilsTest {
 
     @Test
     fun `given timestamp should return time in long format`() {
-        val result = DateUtil.getLongTime("2020-08-26 08:28:42 +0000")
+        val result = DateUtils.getLongTime("2020-08-26 08:28:42 +0000")
 
         assert(result == 1598423322000L)
     }
 
     @Test
     fun `given an invalid timestamp should return 0`() {
-        val result = DateUtil.getLongTime("2020-08-26T08:28:42 +0000")
+        val result = DateUtils.getLongTime("2020-08-26T08:28:42 +0000")
 
         assert(result == 0L)
     }
 
     @Test
     fun `given a null timestamp should return 0`() {
-        val result = DateUtil.getLongTime(null)
+        val result = DateUtils.getLongTime(null)
 
         assert(result == 0L)
     }
@@ -32,7 +32,7 @@ class DateUtilTest {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss +0000", Locale.getDefault())
         val currentDate: String = dateFormat.format(Date())
 
-        val result: String = DateUtil.getRFC3339Time(0) ?: ""
+        val result: String = DateUtils.getRFC3339Time(0) ?: ""
 
         assert(result == currentDate)
     }
