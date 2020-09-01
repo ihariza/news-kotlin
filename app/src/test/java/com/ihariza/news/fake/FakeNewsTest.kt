@@ -2,6 +2,7 @@ package com.ihariza.news.fake
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.ihariza.news.data.api.dto.NewsDto
 import com.ihariza.news.data.api.dto.ReportDto
 import com.ihariza.news.data.api.dto.toEntity
 import com.ihariza.news.data.entity.toBo
@@ -57,32 +58,19 @@ object FakeNewsTest {
             "         url: \"https://seekingalpha.com/article/4340109-old-republic-internationals-p-b-ratio-is-definitely-out-of-balance?source=feed_sector_financial\"\n" +
             "      }]"
 
+    fun getNewsDto(): NewsDto = NewsDto("200", 2, getReportDtoList())
 
     fun getReportDto(): ReportDto {
         val typeReportDto = object : TypeToken<ReportDto>() {}.type
         return Gson().fromJson(JSON_RESPONSE_REPORT, typeReportDto)
     }
 
-    fun getNewsDto(): List<ReportDto> {
+    fun getReportDtoList(): List<ReportDto> {
         val typeReportDto = object : TypeToken<ArrayList<ReportDto>>() {}.type
         return Gson().fromJson(JSON_RESPONSE_NEWS, typeReportDto)
     }
 
     fun getReportBo() = getReportDto().toEntity().toBo()
 
-    fun getNewsBo(): List<ReportBo> = getNewsDto().toEntity().toBo()
-
-    fun getReportVm(): Report {
-        val reportDto = getReportDto()
-        return Report(
-                reportDto.id,
-                reportDto.title,
-                reportDto.description,
-                reportDto.url,
-                reportDto.author,
-                reportDto.image,
-                "5 hour ago"
-        )
-    }
-
+    fun getReportBoList(): List<ReportBo> = getReportDtoList().toEntity().toBo()
 }

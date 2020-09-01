@@ -28,11 +28,11 @@ class GetNewsUseCaseTest {
     fun `given a page number should return a list of report order by date`() {
         coEvery{
             newsRepository.getNews(any())
-        } returns FakeNewsTest.getNewsBo()
+        } returns FakeNewsTest.getReportBoList()
 
         val news = runBlocking { getNewsUseCase.getNews(FakeNewsTest.PAGE_ONE) }
 
-        assert(news == FakeNewsTest.getNewsBo())
+        assert(news == FakeNewsTest.getReportBoList())
 
         coVerify { newsRepository.getNews(any()) }
     }

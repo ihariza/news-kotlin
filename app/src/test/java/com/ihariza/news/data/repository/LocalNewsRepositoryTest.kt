@@ -32,14 +32,14 @@ class LocalNewsRepositoryTest {
     fun `get news should returns a list of news`() {
         coEvery {
             reportDao.getAll(any())
-        } returns FakeNewsTest.getNewsDto().toEntity()
+        } returns FakeNewsTest.getReportDtoList().toEntity()
 
         val news = runBlocking { localNewsRepository.getNews(FakeNewsTest.PAGE_ONE) }
 
         coVerify {
             reportDao.getAll(any())
         }
-        assert(news == FakeNewsTest.getNewsDto().toEntity())
+        assert(news == FakeNewsTest.getReportDtoList().toEntity())
     }
 
     @Test

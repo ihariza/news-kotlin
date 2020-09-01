@@ -32,11 +32,11 @@ class NewsRepositoryTest {
     fun `get page one news should remove news from local and returns a list of news`() {
         coEvery {
             remoteNewsRepository.getNews(FakeNewsTest.PAGE_ONE)
-        } returns FakeNewsTest.getNewsDto().toEntity()
+        } returns FakeNewsTest.getReportDtoList().toEntity()
 
         coEvery {
             localNewsRepository.getNews(FakeNewsTest.PAGE_ONE)
-        } returns FakeNewsTest.getNewsDto().toEntity()
+        } returns FakeNewsTest.getReportDtoList().toEntity()
 
         val news = runBlocking { newsRepository.getNews(FakeNewsTest.PAGE_ONE) }
 
@@ -44,7 +44,7 @@ class NewsRepositoryTest {
             localNewsRepository.removeAll()
             localNewsRepository.save(any())
             localNewsRepository.getNews(FakeNewsTest.PAGE_ONE)
-            assert(news == FakeNewsTest.getNewsDto().toEntity().toBo())
+            assert(news == FakeNewsTest.getReportDtoList().toEntity().toBo())
         }
     }
 
@@ -52,16 +52,16 @@ class NewsRepositoryTest {
     fun `get page two news should returns a list of news`() {
         coEvery {
             remoteNewsRepository.getNews(FakeNewsTest.PAGE_TWO)
-        } returns FakeNewsTest.getNewsDto().toEntity()
+        } returns FakeNewsTest.getReportDtoList().toEntity()
 
         coEvery {
             localNewsRepository.getNews(FakeNewsTest.PAGE_TWO)
-        } returns FakeNewsTest.getNewsDto().toEntity()
+        } returns FakeNewsTest.getReportDtoList().toEntity()
 
         val news = runBlocking { newsRepository.getNews(FakeNewsTest.PAGE_TWO) }
 
         coVerify(exactly = 0) { localNewsRepository.removeAll() }
-        assert(news == FakeNewsTest.getNewsDto().toEntity().toBo())
+        assert(news == FakeNewsTest.getReportDtoList().toEntity().toBo())
     }
 
     @Test

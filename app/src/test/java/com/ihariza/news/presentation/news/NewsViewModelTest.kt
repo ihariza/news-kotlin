@@ -11,7 +11,6 @@ import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.SpyK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -49,7 +48,7 @@ class NewsViewModelTest {
     fun `given page number should show a list of report`() = testCoroutineRule.runBlockingTest {
         coEvery {
             getNewsUseCase.getNews(any())
-        } returns FakeNewsTest.getNewsBo()
+        } returns FakeNewsTest.getReportBoList()
 
         newsViewModel.getNewsPage(FakeNewsTest.PAGE_ONE)
 
@@ -92,7 +91,7 @@ class NewsViewModelTest {
     fun `refresh news should clean and show list of report`() = testCoroutineRule.runBlockingTest {
         coEvery {
             getNewsUseCase.getNews(any())
-        } returns FakeNewsTest.getNewsBo()
+        } returns FakeNewsTest.getReportBoList()
 
         newsViewModel.refreshNews()
 
