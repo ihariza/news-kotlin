@@ -38,10 +38,10 @@ class ReportViewModel(
     }
 
     fun shareReport() {
-        _report.value?.let {  _shareReportEvent.value = Event(it) }
+        report.value?.let {  _shareReportEvent.value = Event(it) }
     }
 
     fun openWebReport() {
-        _report.value?.url?.let { _openWebReportEvent.value = Event(it) }
+        report.value?.url?.let { _openWebReportEvent.value = Event(it) }
     }
 }

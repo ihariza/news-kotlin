@@ -20,5 +20,5 @@ fun ReportBo.toVm(): Report = Report(
         url,
         author,
         image,
-        DateUtils.getRelativeTimeSpanString(published)
+        DateUtils.getRelativeTime(published)
 )

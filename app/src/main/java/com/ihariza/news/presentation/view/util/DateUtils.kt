@@ -4,7 +4,7 @@ import android.text.format.DateUtils
 
 object DateUtils {
 
-    fun getRelativeTimeSpanString(startTime: Long): String {
+    fun getRelativeTime(startTime: Long): String {
         return DateUtils.getRelativeTimeSpanString(startTime).toString()
     }
 }
