@@ -11,7 +11,7 @@ class LocalNewsRepositoryImp constructor(private val reportDao: ReportDao) : Loc
 
     override suspend fun getReport(id: String?): ReportEntity? = reportDao.findBy(id)
 
-    override suspend fun save(report: ReportEntity) =reportDao.insert(report)
+    override suspend fun save(report: ReportEntity) = reportDao.insert(report)
 
     override suspend fun removeAll() = reportDao.deleteAll()
 
