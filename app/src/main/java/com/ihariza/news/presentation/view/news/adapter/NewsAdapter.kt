@@ -9,7 +9,7 @@ import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.ihariza.news.databinding.LoadingRowBinding
-import com.ihariza.news.databinding.NewRowBinding
+import com.ihariza.news.databinding.ReportRowBinding
 import com.ihariza.news.presentation.model.Loading
 import com.ihariza.news.presentation.model.Report
 import com.ihariza.news.presentation.view.base.BaseViewHolder
@@ -37,10 +37,10 @@ class NewsAdapter internal constructor(private val requestManager: RequestManage
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         return when (viewType) {
             VIEW_TYPE_NORMAL -> {
-                val newRowBinding = NewRowBinding.inflate(LayoutInflater.from(parent.context),
+                val reportRowBinding = ReportRowBinding.inflate(LayoutInflater.from(parent.context),
                         parent, false)
-                imageSizeProvider.setView(newRowBinding.image)
-                NewsViewHolder(newRowBinding, requestManager, reportListener)
+                imageSizeProvider.setView(reportRowBinding.image)
+                ReportViewHolder(reportRowBinding, requestManager, reportListener)
             }
             VIEW_TYPE_LOADING -> LoadingViewHolder(
                     LoadingRowBinding.inflate(LayoutInflater.from(parent.context),
@@ -51,7 +51,7 @@ class NewsAdapter internal constructor(private val requestManager: RequestManage
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         when(holder) {
-            is NewsViewHolder -> holder.bind(news[position] as Report)
+            is ReportViewHolder -> holder.bind(news[position] as Report)
             is LoadingViewHolder -> holder.bind(loading)
             else -> throw IllegalArgumentException("Invalid view type")
         }

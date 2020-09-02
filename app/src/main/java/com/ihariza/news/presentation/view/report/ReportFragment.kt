@@ -9,8 +9,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.webkit.*
-import androidx.lifecycle.Observer
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.ihariza.news.R
@@ -60,8 +62,8 @@ class ReportFragment : BaseFragment() {
 
     private fun setupToolbar() {
         binding.toolbar.setNavigationIcon(R.drawable.ic_close_black_24dp)
-        baseActivity.setSupportActionBar(binding.toolbar)
-        baseActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
+        baseActivity?.setSupportActionBar(binding.toolbar)
+        baseActivity?.supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     private fun setupObservers() {
@@ -77,7 +79,7 @@ class ReportFragment : BaseFragment() {
             showOpenReport(it)
         })
 
-        viewModel.report.observe(viewLifecycleOwner, Observer {
+        viewModel.report.observe(viewLifecycleOwner, {
             showTitle(it?.title)
             showSubtitle(it?.author)
             showReport(it?.url)
@@ -127,7 +129,7 @@ class ReportFragment : BaseFragment() {
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, report.title)
         shareIntent.putExtra(Intent.EXTRA_TEXT, report.url)
-        if (shareIntent.resolveActivity(baseActivity.packageManager) != null) {
+        if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(shareIntent)
         }
     }
@@ -135,7 +137,7 @@ class ReportFragment : BaseFragment() {
     private fun showOpenReport(url: String) {
         val viewIntent = Intent(Intent.ACTION_VIEW)
         viewIntent.data = Uri.parse(url)
-        if (viewIntent.resolveActivity(baseActivity.packageManager) != null) {
+        if (viewIntent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(viewIntent)
         }
     }

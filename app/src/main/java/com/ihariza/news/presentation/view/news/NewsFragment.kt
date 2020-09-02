@@ -14,6 +14,7 @@ import com.ihariza.news.presentation.event.EventObserver
 import com.ihariza.news.presentation.view.base.BaseFragment
 import com.ihariza.news.presentation.view.news.adapter.NewsAdapter
 import com.ihariza.news.presentation.view.util.Constants
+import com.ihariza.news.presentation.view.util.IdlingResource
 import com.ihariza.news.presentation.widget.MarginItemDecoration
 import com.ihariza.news.presentation.widget.PaginationListener
 import org.koin.android.ext.android.inject
@@ -42,18 +43,19 @@ class NewsFragment : BaseFragment() {
         setupRecyclerView()
         setupObservers()
         if (adapter.itemCount == 0) {
-           viewModel.getNewsPage(Constants.START_NEWS_PAGE)
+            IdlingResource.increment()
+            viewModel.getNewsPage(Constants.START_NEWS_PAGE)
         }
     }
 
     private fun setupToolbar() {
-        baseActivity.setSupportActionBar(binding.toolbar)
-        baseActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
+        baseActivity?.setSupportActionBar(binding.toolbar)
+        baseActivity?.supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     private fun setupSwipeRefresh() {
         binding.swipeRefresh.setColorSchemeColors(ContextCompat.getColor(
-                baseActivity, R.color.colorAccent))
+                requireContext(), R.color.colorAccent))
         binding.swipeRefresh.setOnRefreshListener {
             adapter.clear()
             viewModel.refreshNews()
@@ -108,6 +110,7 @@ class NewsFragment : BaseFragment() {
 
         viewModel.news.observe(viewLifecycleOwner, {
             adapter.addAll(it)
+            IdlingResource.decrement()
         })
 
         viewModel.openReportEvent.observe(viewLifecycleOwner, EventObserver {

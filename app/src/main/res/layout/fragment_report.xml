@@ -9,7 +9,7 @@
     tools:context=".presentation.view.report.ReportFragment">
 
     <WebView
-        android:id="@+id/web_view"
+        android:id="@+id/webView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <ProgressBar
-        android:id="@+id/progress_report"
+        android:id="@+id/progressReport"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="2dp"

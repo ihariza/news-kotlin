@@ -108,6 +108,7 @@ ext {
             coroutine_test   : buildDependency(coroutinesPackage, 'kotlinx-coroutines-test', coroutinesVersion),
             rules            : buildDependency(testPackage, 'rules', extVersion),
             mockk            : buildDependency(mockkPackage, 'mockk', mockkVersion),
+            mockk_android    : buildDependency(mockkPackage, 'mockk-android', mockkVersion),
             hamcrest         : buildDependency(hamcrestPackage, 'hamcrest-library', hamcrestVersion),
             espresso_core    : buildDependency(espressoPackage, 'espresso-core', espressoVersion),
             espresso_contrib : buildDependency(espressoPackage, 'espresso-contrib', espressoVersion),

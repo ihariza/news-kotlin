@@ -157,6 +157,7 @@ dependencies {
   androidTestImplementation TestingDependencies.ext
   androidTestImplementation TestingDependencies.core
   androidTestImplementation TestingDependencies.rules
+  androidTestImplementation TestingDependencies.mockk_android
   androidTestImplementation TestingDependencies.espresso_core
   androidTestImplementation TestingDependencies.espresso_contrib
 

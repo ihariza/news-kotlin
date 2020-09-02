@@ -2,15 +2,15 @@ package com.ihariza.news.presentation.view.news.adapter
 
 import android.widget.ImageView
 import com.bumptech.glide.RequestManager
-import com.ihariza.news.databinding.NewRowBinding
+import com.ihariza.news.databinding.ReportRowBinding
 import com.ihariza.news.presentation.model.Report
 import com.ihariza.news.presentation.view.base.BaseViewHolder
 import com.ihariza.news.presentation.view.news.adapter.NewsAdapter.ReportListener
 
-internal class NewsViewHolder(private val newsRowBinding: NewRowBinding,
-                              private val requestManager: RequestManager,
-                              private val reportListener: ReportListener) :
-        BaseViewHolder<Report>(newsRowBinding.root) {
+internal class ReportViewHolder(private val reportRowBinding: ReportRowBinding,
+                                private val requestManager: RequestManager,
+                                private val reportListener: ReportListener) :
+        BaseViewHolder<Report>(reportRowBinding.root) {
 
     override fun bind(item: Report) {
         renderReportImage(item.image)
@@ -22,23 +22,23 @@ internal class NewsViewHolder(private val newsRowBinding: NewRowBinding,
     }
 
     private fun renderReportImage(urlImage: String?) {
-        getImage(urlImage, newsRowBinding.image)
+        getImage(urlImage, reportRowBinding.image)
     }
 
     private fun renderReportTitle(name: String?) {
-        newsRowBinding.title.text = name
+        reportRowBinding.title.text = name
     }
 
     private fun renderReportDescription(description: String?) {
-        newsRowBinding.description.text = description
+        reportRowBinding.description.text = description
     }
 
     private fun renderReportAuthor(author: String?) {
-        newsRowBinding.author.text = author
+        reportRowBinding.author.text = author
     }
 
     private fun renderReportPublished(published: String) {
-        newsRowBinding.published.text = published
+        reportRowBinding.published.text = published
     }
 
     private fun onItemClick(report: Report) {

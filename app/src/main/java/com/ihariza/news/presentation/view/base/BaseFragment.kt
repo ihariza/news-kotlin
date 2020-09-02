@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 
 abstract class BaseFragment: Fragment() {
 
-    lateinit var baseActivity: BaseActivity
+    var baseActivity: BaseActivity? = null
 
     @LayoutRes
     abstract fun layoutRes(): Int
@@ -29,19 +29,22 @@ abstract class BaseFragment: Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        baseActivity = context as BaseActivity
+        if (context is BaseActivity) {
+            baseActivity = context
 
-        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                onBackPressed()
+            val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    onBackPressed()
+                }
             }
+            (baseActivity as BaseActivity)
+                    .onBackPressedDispatcher.addCallback(this, callback)
         }
-        baseActivity.onBackPressedDispatcher.addCallback(this, callback)
     }
 
     protected open fun onBackPressed() {
         if (!findNavController().navigateUp()) {
-            baseActivity.finish()
+            baseActivity?.finish()
         }
     }
 }
