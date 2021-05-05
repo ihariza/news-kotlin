@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/newsFragment"
-        android:name="com.ihariza.news.presentation.view.news.NewsFragment"
+        android:name="com.nhariza.news.view.news.NewsFragment"
         android:label="fragment_news"
         tools:layout="@layout/fragment_news" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
-        android:name="com.ihariza.news.presentation.view.report.ReportFragment"
+        android:name="com.nhariza.news.view.report.ReportFragment"
         android:label="fragment_report"
         tools:layout="@layout/fragment_report" >
         <action
