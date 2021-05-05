@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 
 open class BaseViewModel : ViewModel() {
 
-    protected val mErrorEvent = MutableLiveData<Event<String>>()
-    val errorEvent: LiveData<Event<String>> get() = mErrorEvent
+    protected val mErrorEvent = MutableLiveData<String>()
+    val errorEvent: LiveData<String> get() = mErrorEvent
 
     fun ViewModel.executeInBackground(block: suspend CoroutineScope.() -> Unit): Job {
         return viewModelScope.launch(Dispatchers.IO) {

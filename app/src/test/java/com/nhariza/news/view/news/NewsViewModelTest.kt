@@ -6,7 +6,6 @@ import com.nhariza.news.repository.NewsRepository
 import com.nhariza.news.repository.toEntity
 import com.nhariza.news.repository.toModel
 import com.nhariza.news.view.base.BaseViewModelTest
-import com.nhariza.news.view.base.Event
 import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.impl.annotations.SpyK
@@ -26,22 +25,17 @@ class NewsViewModelTest : BaseViewModelTest() {
     lateinit var newsRepository: NewsRepository
 
     @SpyK
-    val loadingEventObserver: Observer<Event<Boolean>> = spyk(Observer { })
-
-    @SpyK
-    val refreshEventObserver: Observer<Event<Boolean>> = spyk(Observer { })
+    val refreshEventObserver: Observer<Boolean> = spyk(Observer { })
 
     private lateinit var newsViewModel: NewsViewModel
 
 
     override fun setup() {
         newsViewModel = NewsViewModel(newsRepository)
-        newsViewModel.loadingEvent.observeForever(loadingEventObserver)
         newsViewModel.refreshingEvent.observeForever(refreshEventObserver)
     }
 
     override fun tearDown() {
-        newsViewModel.loadingEvent.removeObserver(loadingEventObserver)
         newsViewModel.refreshingEvent.removeObserver(refreshEventObserver)
     }
 
@@ -53,20 +47,17 @@ class NewsViewModelTest : BaseViewModelTest() {
 
         newsViewModel.getNewsPage(PAGE_ONE)
 
-        val loadingSlot = slot<Event<Boolean>>()
-        val refreshSlot = slot<Event<Boolean>>()
+        val refreshSlot = slot<Boolean>()
 
         coVerifySequence {
-            loadingEventObserver.onChanged(capture(loadingSlot))
             newsRepository.getNews(any())
             refreshEventObserver.onChanged(capture(refreshSlot))
-            loadingEventObserver.onChanged(capture(loadingSlot))
         }
     }
 
     @Test
     fun `given an error should show show message error`() {
-        val errorEventObserver: Observer<Event<String>> = spyk(Observer { })
+        val errorEventObserver: Observer<String> = spyk(Observer { })
         newsViewModel.errorEvent.observeForever(errorEventObserver)
 
         coEvery {
@@ -75,15 +66,12 @@ class NewsViewModelTest : BaseViewModelTest() {
 
         newsViewModel.getNewsPage(PAGE_ONE)
 
-        val loadingSlot = slot<Event<Boolean>>()
-        val refreshSlot = slot<Event<Boolean>>()
-        val errorSlot = slot<Event<String>>()
+        val refreshSlot = slot<Boolean>()
+        val errorSlot = slot<String>()
 
         coVerifySequence {
-            loadingEventObserver.onChanged(capture(loadingSlot))
             newsRepository.getNews(any())
             refreshEventObserver.onChanged(capture(refreshSlot))
-            loadingEventObserver.onChanged(capture(loadingSlot))
             errorEventObserver.onChanged(capture(errorSlot))
         }
     }
@@ -101,13 +89,13 @@ class NewsViewModelTest : BaseViewModelTest() {
 
     @Test
     fun `open report should show report detail`() {
-        val openReportEventObserver: Observer<Event<String>> = spyk(Observer { })
+        val openReportEventObserver: Observer<String?> = spyk(Observer { })
         newsViewModel.openReportEvent.observeForever(openReportEventObserver)
 
         newsViewModel.openReport(REPORT_ID)
 
-        val openReportSlot = slot<Event<String>>()
-
-        verify { openReportEventObserver.onChanged(capture(openReportSlot)) }
+        verifySequence {
+            openReportEventObserver.onChanged(REPORT_ID)
+        }
     }
 }

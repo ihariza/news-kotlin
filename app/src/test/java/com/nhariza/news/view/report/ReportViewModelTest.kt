@@ -7,7 +7,6 @@ import com.nhariza.news.repository.model.Report
 import com.nhariza.news.repository.toEntity
 import com.nhariza.news.repository.toModel
 import com.nhariza.news.view.base.BaseViewModelTest
-import com.nhariza.news.view.base.Event
 import com.nhariza.news.view.util.DateFormatter
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -74,7 +73,7 @@ class ReportViewModelTest : BaseViewModelTest() {
 
     @Test
     fun `given an exception on show report should show message error`() {
-        val errorEventObserver: Observer<Event<String>> = spyk(Observer { })
+        val errorEventObserver: Observer<String> = spyk(Observer { })
         reportViewModel.errorEvent.observeForever(errorEventObserver)
 
         coEvery {
@@ -83,7 +82,7 @@ class ReportViewModelTest : BaseViewModelTest() {
 
         reportViewModel.showReport(REPORT_ID)
 
-        val errorSlot = slot<Event<String>>()
+        val errorSlot = slot<String>()
 
         coVerifySequence {
             newsRepository.getReport(any())
@@ -98,7 +97,7 @@ class ReportViewModelTest : BaseViewModelTest() {
 
         assertEquals(
             ReportDtoBuilder.build().toEntity().toModel(),
-            reportViewModel.shareReportEvent.value?.peekContent()
+            reportViewModel.shareReportEvent.value
         )
     }
 
@@ -116,7 +115,7 @@ class ReportViewModelTest : BaseViewModelTest() {
 
         assertEquals(
             ReportDtoBuilder.build().toEntity().toModel().url,
-            reportViewModel.openWebReportEvent.value?.peekContent()
+            reportViewModel.openWebReportEvent.value
         )
     }
 

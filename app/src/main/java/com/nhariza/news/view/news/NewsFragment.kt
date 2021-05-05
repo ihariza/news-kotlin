@@ -3,6 +3,7 @@ package com.nhariza.news.view.news
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
@@ -10,7 +11,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.nhariza.news.R
 import com.nhariza.news.databinding.FragmentNewsBinding
 import com.nhariza.news.view.base.BaseFragment
-import com.nhariza.news.view.base.EventObserver
 import com.nhariza.news.view.news.adapter.NewsAdapter
 import com.nhariza.news.view.util.Constants
 import com.nhariza.news.view.widget.MarginItemDecoration
@@ -46,6 +46,11 @@ class NewsFragment : BaseFragment() {
         }
     }
 
+    override fun onStop() {
+        viewModel.onStop()
+        super.onStop()
+    }
+
     private fun setupToolbar() {
         baseActivity?.setSupportActionBar(binding.toolbar)
         baseActivity?.supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -53,9 +58,7 @@ class NewsFragment : BaseFragment() {
 
     private fun setupSwipeRefresh() {
         binding.swipeRefresh.setColorSchemeColors(
-            ContextCompat.getColor(
-                requireContext(), R.color.blue_700
-            )
+            ContextCompat.getColor(requireContext(), R.color.blue_700)
         )
         binding.swipeRefresh.setOnRefreshListener {
             adapter.clear()
@@ -72,40 +75,40 @@ class NewsFragment : BaseFragment() {
                 }
 
                 override fun isLastPage(): Boolean =
-                    viewModel.lastPageEvent.value?.peekContent() ?: false
+                    viewModel.lastPageEvent.value ?: false
             }
         binding.recyclerview.layoutManager = layoutManager
-        binding.recyclerview.addItemDecoration(
-            MarginItemDecoration(
-                resources.getDimension(R.dimen.spacing_large).toInt()
-            )
-        )
+        binding.recyclerview.addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.spacing_large).toInt()))
         binding.recyclerview.adapter = adapter
         binding.recyclerview.addOnScrollListener(paginationListener)
     }
 
     private fun setupObservers() {
-        viewModel.refreshingEvent.observe(viewLifecycleOwner, EventObserver {
-            if (!it) {
-                binding.swipeRefresh.isRefreshing = false
-            }
-        })
+        lifecycleScope.launchWhenCreated {
+            viewModel.refreshingEvent.observe(viewLifecycleOwner, {
+                if (!it) {
+                    binding.swipeRefresh.isRefreshing = false
+                }
+            })
 
-        viewModel.errorEvent.observe(viewLifecycleOwner, EventObserver {
-            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
-        })
+            viewModel.errorEvent.observe(viewLifecycleOwner, {
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+            })
 
-        viewModel.news.observe(viewLifecycleOwner, {
-            adapter.addAll(it)
-        })
+            viewModel.news.observe(viewLifecycleOwner, { reports ->
+                reports?.let { adapter.addAll(it) }
+            })
 
-        viewModel.openReportEvent.observe(viewLifecycleOwner, EventObserver {
-            openReport(it)
-        })
+            viewModel.openReportEvent.observe(viewLifecycleOwner, {
+                openReport(it)
+            })
+        }
     }
 
-    private fun openReport(reportId: String) {
-        val action = NewsFragmentDirections.actionNewsFragmentToReportFragment(reportId)
-        findNavController().navigate(action)
+    private fun openReport(reportId: String?) {
+        reportId?.let {
+            val action = NewsFragmentDirections.actionNewsFragmentToReportFragment(it)
+            findNavController().navigate(action)
+        }
     }
 }

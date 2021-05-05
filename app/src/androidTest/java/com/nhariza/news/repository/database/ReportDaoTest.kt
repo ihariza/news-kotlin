@@ -4,7 +4,7 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.nhariza.news.builder.ReportDtoBuilder
-import com.nhariza.news.repository.datasource.model.toEntity
+import com.nhariza.news.repository.toEntity
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals

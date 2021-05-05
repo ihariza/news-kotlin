@@ -19,7 +19,6 @@ import com.nhariza.news.R
 import com.nhariza.news.databinding.FragmentReportBinding
 import com.nhariza.news.repository.model.Report
 import com.nhariza.news.view.base.BaseFragment
-import com.nhariza.news.view.base.EventObserver
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReportFragment : BaseFragment() {
@@ -67,15 +66,15 @@ class ReportFragment : BaseFragment() {
     }
 
     private fun setupObservers() {
-        viewModel.errorEvent.observe(viewLifecycleOwner, EventObserver {
+        viewModel.errorEvent.observe(viewLifecycleOwner, {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
         })
 
-        viewModel.shareReportEvent.observe(viewLifecycleOwner, EventObserver {
+        viewModel.shareReportEvent.observe(viewLifecycleOwner, {
             showShareReport(it)
         })
 
-        viewModel.openWebReportEvent.observe(viewLifecycleOwner, EventObserver {
+        viewModel.openWebReportEvent.observe(viewLifecycleOwner, {
             showOpenReport(it)
         })
 

@@ -40,10 +40,6 @@ class NewsAdapter internal constructor(
         return news.size
     }
 
-    fun getImageSizeProvider(): ViewPreloadSizeProvider<Any> {
-        return imageSizeProvider
-    }
-
     fun addAll(collection: Collection<Report>) {
         if (clearNews) {
             news.clear()

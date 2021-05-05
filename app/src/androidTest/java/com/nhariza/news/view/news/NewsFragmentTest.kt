@@ -5,7 +5,7 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.*
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
@@ -26,7 +26,8 @@ class NewsFragmentTest : BaseAndroidTest() {
     private lateinit var scenario: FragmentScenario<NewsFragment>
 
     override fun setup() {
-        scenario = launchFragmentInContainer(themeResId = R.style.Theme_MaterialComponents_DayNight_NoActionBar)
+        scenario =
+            launchFragmentInContainer(themeResId = R.style.Theme_MaterialComponents_DayNight_NoActionBar)
     }
 
     @Test
