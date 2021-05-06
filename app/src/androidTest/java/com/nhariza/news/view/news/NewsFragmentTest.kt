@@ -76,7 +76,8 @@ class NewsFragmentTest : BaseAndroidTest() {
                 2
             )
         )
-        Espresso.onView(withId(R.id.recyclerview)).perform(ViewActions.swipeUp())
+        Espresso.onView(withId(R.id.newsFragmentContainer)).perform(ViewActions.swipeUp())
+
         waitForIdle(SLEEP.LARGE)
         assertDisplayed("gAlpha.com")
     }
